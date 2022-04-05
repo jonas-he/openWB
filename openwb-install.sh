@@ -113,3 +113,4 @@ chmod +x /var/www/html/openWB/runs/*
 chmod +x /var/www/html/openWB/*.sh
 touch /var/log/openWB.log
 chmod 777 /var/log/openWB.log
+/var/www/html/openWB/runs/atreboot_install.sh

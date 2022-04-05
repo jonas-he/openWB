@@ -1,0 +1,33 @@
+FROM balenalib/raspberry-pi-debian:buster
+ARG DEBIAN_FRONTEND=noninteractive
+
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
+RUN install_packages \
+        apt-utils \
+		ca-certificates \
+		cron \
+		curl \
+		iproute2 \
+		iputils-ping \
+		net-tools \
+		python3 \
+		python3-dev \
+		sudo
+
+RUN useradd -ms /bin/bash pi
+RUN echo "pi ALL=(ALL) NOPASSWD: ALL" >> /etc/sudoers.d/010_pi-nopasswd
+USER pi
+WORKDIR /home/pi
+
+RUN curl -s https://raw.githubusercontent.com/jonas-he/openWB/master/openwb-install.sh | sudo bash
+RUN printf "* * * * * /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1\n\
+* * * * * sleep 10 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1\n\
+* * * * * sleep 20 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1\n\
+* * * * * sleep 30 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1\n\
+* * * * * sleep 40 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1\n\
+* * * * * sleep 50 && /var/www/html/openWB/regel.sh >> /var/log/openWB.log 2>&1\n" | crontab -
+
+COPY entrypoint.sh /home/pi/entrypoint.sh
+RUN sudo chmod +x /home/pi/entrypoint.sh
+ENTRYPOINT ["/home/pi/entrypoint.sh"]

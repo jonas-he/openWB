@@ -1,0 +1,23 @@
+version: "2.4"
+services:
+
+  openwb:
+    image: jonius/openwb:latest
+    init: true
+    container_name: openwb
+    network_mode: host
+    restart: unless-stopped
+    cap_add:
+      - NET_ADMIN
+    environment:
+      TZ: "Europe/Berlin"
+    volumes:
+      - type: bind
+        source: ./openwb.conf
+        target: /var/www/html/openWB/openwb.conf
+      - type: bind
+        source: ./logdata
+        target: /var/www/html/openWB/web/logging/data
+      - type: bind
+        source: ./mosquitto
+        target: /var/lib/mosquitto
