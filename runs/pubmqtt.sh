@@ -291,10 +291,22 @@ for mq in "${!mqttvar[@]}"; do
 done
 
 sysinfo=$(cd web/tools; sudo php programmloggerinfo.php 2>/dev/null)
+cputemp=$(echo ${sysinfo} | jq -r '.cputemp')
+if [ -z "$cputemp" ]
+then
+    cputemp="0"
+fi
+
+cpufreq=$(echo ${sysinfo} | jq -r '.cpufreq')
+if [ -z "$cpufreq" ]
+then
+    cpufreq="0"
+fi
+
 tempPubList="${tempPubList}\nopenWB/global/cpuModel=$(cat /proc/cpuinfo | grep -m 1 "model name" | sed "s/^.*: //")"
 tempPubList="${tempPubList}\nopenWB/global/cpuUse=$(echo ${sysinfo} | jq -r '.cpuuse')"
-tempPubList="${tempPubList}\nopenWB/global/cpuTemp=$(echo "scale=2; $(echo ${sysinfo} | jq -r '.cputemp') / 1000" | bc)"
-tempPubList="${tempPubList}\nopenWB/global/cpuFreq=$(($(echo ${sysinfo} | jq -r '.cpufreq') / 1000))"
+tempPubList="${tempPubList}\nopenWB/global/cpuTemp=$(echo "scale=2; $cputemp / 1000" | bc)"
+tempPubList="${tempPubList}\nopenWB/global/cpuFreq=$(($cpufreq / 1000))"
 tempPubList="${tempPubList}\nopenWB/global/memTotal=$(echo ${sysinfo} | jq -r '.memtot')"
 tempPubList="${tempPubList}\nopenWB/global/memUse=$(echo ${sysinfo} | jq -r '.memuse')"
 tempPubList="${tempPubList}\nopenWB/global/memFree=$(echo ${sysinfo} | jq -r '.memfree')"
