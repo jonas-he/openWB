@@ -86,12 +86,6 @@ if python3 -c "import ipparser" &> /dev/null; then
 else
 	sudo pip3 install ipparser
 fi
-#Prepare for lxml used in soc module libvwid in Python
-if python3 -c "import lxml" &> /dev/null; then
-	echo 'lxml installed...'
-else
-	#sudo pip3 install lxml
-fi
 
 # update outdated urllib3 for Tesla Powerwall
 pip3 install --upgrade urllib3
