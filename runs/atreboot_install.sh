@@ -90,7 +90,7 @@ fi
 if python3 -c "import lxml" &> /dev/null; then
 	echo 'lxml installed...'
 else
-	sudo pip3 install lxml
+	#sudo pip3 install lxml
 fi
 
 # update outdated urllib3 for Tesla Powerwall
