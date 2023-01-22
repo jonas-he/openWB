@@ -20,5 +20,5 @@ __pycache__
 openwb.conf.*
 smarthome.ini
 web/backup/*.tar.gz
-docker/openwb.conf
 docker/mosquitto/
+docker/data/

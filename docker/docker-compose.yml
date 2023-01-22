@@ -14,12 +14,13 @@ services:
       - "80:80"
       - "9001:9001"
     volumes:
-      - type: bind
-        source: ./openwb.conf
-        target: /var/www/html/openWB/openwb.conf
-      - type: bind
-        source: ./logdata
-        target: /var/www/html/openWB/web/logging/data
-      - type: bind
-        source: ./mosquitto
-        target: /var/lib/mosquitto
+      - app-volume:/var/www/html/openWB
+      - ./mosquitto:/var/lib/mosquitto
+        
+volumes:
+  app-volume:
+    driver: local
+    driver_opts:
+      type: 'none'
+      o: 'bind'
+      device: '${PWD}/data'
